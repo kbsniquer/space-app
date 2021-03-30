@@ -13,13 +13,12 @@ export default {
   data() {
     return {
       nasaObject: {},
-      nasaObjectUrl: "",
+      nasaPicArray: [],
       nasaIds: ["PIA12348", "PIA15985", "0302063", "PIA15416", "PIA16008"],
     };
   },
   async created() {
     // GET request using fetch with async/await
-
     const data = await Promise.all(
       this.nasaIds.map(async (id) => {
         const res = await fetch(`https://images-api.nasa.gov/asset/${id}`);
@@ -27,9 +26,12 @@ export default {
         return data;
       })
     );
-
-    this.nasaObject = data;
-    console.log(data);
+    this.nasaPicArray = JSON.stringify(this.moveIds(data));
+  },
+  methods: {
+    moveIds(data) {
+      return data.map((el) => el.collection.items[0].href);
+    },
   },
 };
 </script>

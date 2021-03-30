@@ -1,8 +1,8 @@
 <template>
   <div class="container">
-    <img :src="nasaObject.url" />
-    <h1>{{ nasaObject.title }}</h1>
-    <p>{{ nasaObject.explanation }}</p>
+    <!-- <img :src="nasaObject.collection.items[0].href" /> -->
+    <!-- <h1>{{ nasaObject.title }}</h1>
+    <p>{{ nasaObject.explanation }}</p> -->
   </div>
 </template>
 
@@ -13,17 +13,23 @@ export default {
   data() {
     return {
       nasaObject: {},
+      nasaObjectUrl: "",
+      nasaIds: ["PIA12348", "PIA15985", "0302063", "PIA15416", "PIA16008"],
     };
   },
   async created() {
     // GET request using fetch with async/await
-    const res = await fetch(
-      "https://api.nasa.gov/planetary/apod?api_key=NfcyTbFPzpRXHo1mBtpooTJ5WQ158AOK6aYzmwzq"
-    );
-    const data = await res.json();
 
-    console.log(data);
+    const data = await Promise.all(
+      this.nasaIds.map(async (id) => {
+        const res = await fetch(`https://images-api.nasa.gov/asset/${id}`);
+        const data = await res.json();
+        return data;
+      })
+    );
+
     this.nasaObject = data;
+    console.log(data);
   },
 };
 </script>

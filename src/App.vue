@@ -1,15 +1,18 @@
 <template>
-  <div class="container">
-    <!-- <img :src="nasaObject.collection.items[0].href" /> -->
-    <!-- <h1>{{ nasaObject.title }}</h1>
-    <p>{{ nasaObject.explanation }}</p> -->
+  <div v-bind:key="pic" v-for="pic in nasaPicArray">
+    <img :src="pic" alt="" class="bkg" />
   </div>
+  <Button />
 </template>
 
 <script>
+import Button from "./components/Button";
+
 export default {
   name: "App",
-  components: {},
+  components: {
+    Button,
+  },
   data() {
     return {
       nasaObject: {},
@@ -26,7 +29,7 @@ export default {
         return data;
       })
     );
-    this.nasaPicArray = JSON.stringify(this.moveIds(data));
+    this.nasaPicArray = this.moveIds(data);
   },
   methods: {
     moveIds(data) {
@@ -37,27 +40,29 @@ export default {
 </script>
 
 <style>
-img {
-  width: 80%;
-}
-
+body,
+html,
 p {
-  margin: 0 auto;
-  width: 75%;
+  margin: 0;
 }
-
+div {
+  display: inline-block;
+  overflow: hidden;
+  position: relative;
+  width: 100%;
+}
+.bkg {
+  /* pointer-events: none;
+  /* position: absolute; */
+  width: 100%;
+  /* height: 100%; */
+  /* z-index: -1; */
+}
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
-}
-
-.container {
-  max-width: 80%;
-  margin: 0 auto;
-  overflow: auto;
-  border-radius: 5px;
 }
 </style>
